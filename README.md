@@ -7,10 +7,10 @@ Additonally, there's an option to include a locus (that takes a certain format, 
 It's straightforward to run if you have nextflow installed. You provide 3 parameters, a species ID (for file name), a `braker_gff`(gff3), and a `repeat_gff`(gff3)
 ```shell
 # merge your gffs
-nextflow run artorias111/FeatureFlow --species_id hsapien134 --braker_gff /path/to/braker/braker.gff3 --repeat_gff /path/to/eg/repeats.gff
+nextflow run artorias111/gff-merge --species_id hsapien134 --braker_gff /path/to/braker/braker.gff3 --repeat_gff /path/to/eg/repeats.gff
 
 # merge your gffs, and also retrive a sketch of a certain region of interest
-nextflow run artorias111/FeatureFlow --species_id hsapien134 --braker_gff /path/to/braker/braker.gff3 --repeat_gff /path/to/eg/repeats.gff --genome_region chr12-243-534
+nextflow run artorias111/gff-merge --species_id hsapien134 --braker_gff /path/to/braker/braker.gff3 --repeat_gff /path/to/eg/repeats.gff --genome_region chr12-243-534
 ```
 
 ### Specifying the genome region
