@@ -12,7 +12,7 @@ BEGIN { FS=OFS="\t" }
         key = kv[1];
         val = kv[2];
 
-        # --- This is the core logic ---
+        # Convert to lowercase if needed
         if (key == "NAME") {
             key = "Name";
         } else if (key != "ID" && key != "Parent") {
