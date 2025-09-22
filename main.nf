@@ -1,31 +1,5 @@
 #!/usr/bin/env nextflow
 
-process mergeGff {
-
-    publishDir '.', mode: 'copy'
-
-    input:
-    path braker_gff
-    path repeat_gff
-
-
-    output:
-    path "${params.species_id}.braker.eg.combined.gff"
-
-
-    script:
-    """
-    touch write_file
-    grep "^#" ${braker_gff} >> write_file || true
-    grep "^#" ${repeat_gff} >> write_file || true
-
-    cat ${braker_gff} ${repeat_gff} | sort -k1,1 -k4,4n >> write_file
-
-    mv write_file ${params.species_id}.braker.eg.combined.gff
-    """
-}
-
-
 process mergeGffGt {
 
     publishDir '.', mode: 'copy'
@@ -40,13 +14,10 @@ process mergeGffGt {
 
     script:
     """
-    touch write_file
-    grep "^#" ${braker_gff} >> write_file || true
-    grep "^#" ${repeat_gff} >> write_file || true
+    awk -f ${projectDir}/fix_gff_attrs.awk ${repeat_gff} | \
+    awk 'NR == 1 && !/^##gff-version 3/ { print "##gff-version 3" } { print }' > repeat.fixed.gff
 
-    cat ${braker_gff} ${repeat_gff} | xargs -I {} {params.gt_path}/gt gff3 -sort {} >> write_file
-
-    mv write_file ${params.species_id}.braker.eg.combined.gff
+    ${params.gt_path}/gt gff3 -sort -addids no ${braker_gff} repeat.fixed.gff > ${params.species_id}.braker.eg.combined.gff
     """
 }
 
@@ -60,6 +31,7 @@ process AnnotationSketch {
     val genome_region
 
     output:
+    path "${params.species_id}.annotation_sketch.png"
 
 
     script:
@@ -69,18 +41,17 @@ process AnnotationSketch {
     def start = coordinate_list[1].toInteger()
     def end = coordinate_list[2].toInteger()
 
-    if end < start {
-        end, start = start, end
+    if (end < start) {
+        (end, start) = [start, end]
     }
 
     """
+    ${params.gt_path}/gt sketch -seqid ${chr} -start ${start} -end ${end} ${params.species_id}.annotation_sketch.png ${merged_gff}
 
     """
 
-
-
-
 }
+
 
 workflow {
     if (!params.species_id) exit 1, "Please provide a --species_id"
@@ -90,9 +61,9 @@ workflow {
     braker_ch = file(params.braker_gff)
     repeat_ch = file(params.repeat_gff)
 
-    mergeGff(braker_ch, repeat_ch)
+    mergeGffGt(braker_ch, repeat_ch)
 
     if (params.genome_region) {
-        AnnotationSketch(mergeGff.out.merged_gff, params.genome_region)
+        AnnotationSketch(mergeGffGt.out.merged_gff, params.genome_region)
     }
 }
