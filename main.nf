@@ -35,7 +35,7 @@ process AnnotationSketch {
 
 
     script:
-    def coordinate_list = genome_region.split("-")
+    def coordinate_list = genome_region.split(":")
 
     def chr = coordinate_list[0]
     def start = coordinate_list[1].toInteger()
@@ -55,15 +55,19 @@ process AnnotationSketch {
 
 workflow {
     if (!params.species_id) exit 1, "Please provide a --species_id"
-    if (!params.braker_gff) exit 1, "Please provide a --braker_gff file"
-    if (!params.repeat_gff) exit 1, "Please provide a --repeat_gff file"
 
-    braker_ch = file(params.braker_gff)
-    repeat_ch = file(params.repeat_gff)
+    if (params.runMode == 'default') {
+        braker_ch = file(params.braker_gff)
+        repeat_ch = file(params.repeat_gff)
 
-    mergeGffGt(braker_ch, repeat_ch)
+        mergeGffGt(braker_ch, repeat_ch)
 
-    if (params.genome_region) {
-        AnnotationSketch(mergeGffGt.out.merged_gff, params.genome_region)
+        if (params.genome_region) {
+            AnnotationSketch(mergeGffGt.out.merged_gff, params.genome_region)
+        }
+    }
+
+    if (params.runMode == 'plot') {
+        AnnotationSketch(params.gff, params.genome_region)
     }
 }

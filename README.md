@@ -10,17 +10,20 @@ It's straightforward to run if you have nextflow installed. You provide 3 parame
 nextflow run artorias111/gff-merge --species_id hsapien134 --braker_gff /path/to/braker/braker.gff3 --repeat_gff /path/to/eg/repeats.gff
 
 # merge your gffs, and also retrive a sketch of a certain region of interest
-nextflow run artorias111/gff-merge --species_id hsapien134 --braker_gff /path/to/braker/braker.gff3 --repeat_gff /path/to/eg/repeats.gff --genome_region chr12-243-534
+nextflow run artorias111/gff-merge --species_id hsapien134 --braker_gff /path/to/braker/braker.gff3 --repeat_gff /path/to/eg/repeats.gff --genome_region chr12:243:534
+
+# Only plot a region of interest, provide your own (valid) gff file
+nextflow run artorias111/gff-merge --runMode plot --species_id hsapien124 --gff /path/to/valid/gff.gff --genome_region chrX:4324:5435
 ```
 
 ### Specifying the genome region
-The genome region contains a chromosome, start co-ordinate (1-index), and stop co-ordinate, seperated by a single dash `-`. Make sure the chromsome number/ID matches the first column of the gff file(s). 
+The genome region contains a chromosome, start co-ordinate (1-index), and stop co-ordinate, seperated by a `:` (It was tough to pick a character that doesn't usually end up in a fasta header. I tried ">" first, but that doesn't work for command line arguments. I tried "-" next, and quickly ran into fasta headers with that characters, so I've stuck to ":" for now. I can make this variable in the future if it's problematic). Make sure the chromsome number/ID matches the first column of the gff file(s). 
 
 Examples: 
 ```shell
 # chromosome 12 (written as chr12 in the gff file), from bp 243 to 534
-chr12-243-534
+chr12:243:534
 
 # scaffold_9 from bp 434353 to 23124322
-scaffold_9-434353-23124322
+scaffold_9:434353:23124322
 ```
