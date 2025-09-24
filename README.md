@@ -16,6 +16,9 @@ nextflow run artorias111/gff-merge --species_id hsapien134 --braker_gff /path/to
 nextflow run artorias111/gff-merge --runMode plot --species_id hsapien124 --gff /path/to/valid/gff.gff --genome_region chrX:4324:5435
 ```
 
+### What's a valid gff file?
+https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md
+
 ### Specifying the genome region
 The genome region contains a chromosome, start co-ordinate (1-index), and stop co-ordinate, seperated by a `:` (It was tough to pick a character that doesn't usually end up in a fasta header. I tried ">" first, but that doesn't work for command line arguments. I tried "-" next, and quickly ran into fasta headers with that character in it, so I've stuck to ":" for now. I can make this variable in the future if it's problematic). Make sure the chromsome number/ID matches the first column of the gff file(s). 
 
