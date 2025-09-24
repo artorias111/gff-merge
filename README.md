@@ -17,7 +17,7 @@ nextflow run artorias111/gff-merge --runMode plot --species_id hsapien124 --gff 
 ```
 
 ### Specifying the genome region
-The genome region contains a chromosome, start co-ordinate (1-index), and stop co-ordinate, seperated by a `:` (It was tough to pick a character that doesn't usually end up in a fasta header. I tried ">" first, but that doesn't work for command line arguments. I tried "-" next, and quickly ran into fasta headers with that characters, so I've stuck to ":" for now. I can make this variable in the future if it's problematic). Make sure the chromsome number/ID matches the first column of the gff file(s). 
+The genome region contains a chromosome, start co-ordinate (1-index), and stop co-ordinate, seperated by a `:` (It was tough to pick a character that doesn't usually end up in a fasta header. I tried ">" first, but that doesn't work for command line arguments. I tried "-" next, and quickly ran into fasta headers with that character in it, so I've stuck to ":" for now. I can make this variable in the future if it's problematic). Make sure the chromsome number/ID matches the first column of the gff file(s). 
 
 Examples: 
 ```shell
