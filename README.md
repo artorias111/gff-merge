@@ -30,3 +30,12 @@ chr12:243:534
 # scaffold_9 from bp 434353 to 23124322
 scaffold_9:434353:23124322
 ```
+
+## Extract transcripts
+If you have a region within your gff whose transcripts you want to extract. You can provide a csv table with 5 mandatory columns to the helper script `extract_transcripts.py --csv /path/to/csv.csv`. The order of the columns are (each row contains one species of interest) list below. Headers are ignored, and any column after column 5 are ignored. Make sure the 
+1. species_id
+2. Genes_gff_path
+3. Genes_transcripts_fasta_path
+4. chromosome (should match the first column of the gff provided in the second column)
+5. start
+6. end
